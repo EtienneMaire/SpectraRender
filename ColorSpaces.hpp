@@ -16,13 +16,13 @@ namespace
 	};
 
 	glm::mat3 RGB_To_XYZ_matrix(
-		glm::vec3( 0.412390799265959, 0.357584339383878, 0.180480788401834 ),
-		glm::vec3( 0.212639005871510, 0.715168678767756, 0.072192315360734 ),
-		glm::vec3( 0.019330818715592, 0.119194779794626, 0.950532152249661 ));
+		glm::vec3( 0.4887180, 0.3106803, 0.2006017 ),
+		glm::vec3( 0.1762044, 0.8129847, 0.0108109 ),
+		glm::vec3( 0.0000000, 0.0102048, 0.9897952 ));
 	glm::mat3 XYZ_To_RGB_matrix(
-		glm::vec3(3.240969941904523, -1.537383177570094, -0.498610760293003),
-		glm::vec3(-0.969243636280880, 1.875967501507721, 0.041555057407176),
-		glm::vec3(0.055630079696994, -0.203976958888977, 1.056971514242879));
+		glm::vec3(  2.3706743, -0.9000405, -0.4706338 ),
+		glm::vec3( -0.5138850,  1.4253036,  0.0885814 ),
+		glm::vec3(  0.0052982, -0.0146949,  1.0093968 ));
 
 	glm::vec3 XYZ_To_xyY(glm::vec3 xyz)
 	{
@@ -33,7 +33,7 @@ namespace
 	{
 		return glm::vec3(xyY.x * xyY.y / xyY.z,	// xY/y
 						 xyY.z, 				// Y
-						(1 - xyY.x - xyY.y) * xyY.z / xyY.y);	// (1 - x - y)Y / y
+						 (1 - xyY.x - xyY.y) * xyY.z / xyY.y);	// (1 - x - y)Y / y
 	}
 
 	glm::vec3 sRGB_To_RGB(glm::vec3 rgb)
@@ -52,12 +52,12 @@ namespace
 
 	glm::vec3 XYZ_To_RGB(glm::vec3 xyz)
 	{
-		return XYZ_To_RGB_matrix * xyz;
-	}
+		return xyz * XYZ_To_RGB_matrix;
+	} 
 
 	glm::vec3 RGB_To_XYZ(glm::vec3 rgb)
 	{
-		return RGB_To_XYZ_matrix * rgb;
+		return rgb * RGB_To_XYZ_matrix;
 	}
 
 	glm::vec3 convertColorSpace(

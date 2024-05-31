@@ -143,6 +143,7 @@
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="CameraDefs.hpp" />
     <ClInclude Include="Spectrum.hpp" />
+    <ClInclude Include="SpectrumDefs.hpp" />
     <ClInclude Include="util.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
