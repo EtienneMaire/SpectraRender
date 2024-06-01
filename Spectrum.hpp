@@ -35,6 +35,11 @@ public:
 			samples[i] = 0;
 	}
 
+	Spectrum(float* data, uint8_t _sampleCount)
+	{
+		fromData(data, _sampleCount);
+	}
+
 	~Spectrum()
 	{
 		if (samples)
@@ -52,17 +57,27 @@ public:
 			samples[i] = data[i];
 	}
 
-	void fromRGB(glm::vec3 rgb)
+	void fromXYZ(glm::vec3 xyz)
 	{
-		glm::vec3 xyz = RGB_To_XYZ(rgb);
-		fromXYZ(xyz);
+		glm::vec3 rgb = XYZ_To_RGB(xyz);
+		fromRGB(rgb);
 	}
 
-	void fromXYZ(glm::vec3 xyz);
+	void fromRGB(glm::vec3 rgb);
 
-	float& getSample(uint8_t sample)
+	inline uint8_t getSampleCount()
+	{
+		return sampleCount;
+	}
+
+	inline float& getSample(uint8_t sample)
 	{
 		return samples[sample % sampleCount];
+	}
+
+	inline void setSample(uint8_t sample, float val)
+	{
+		samples[sample % sampleCount] = val;
 	}
 
 	float getPower(float lambda)	// nm
@@ -78,6 +93,8 @@ public:
 		float sample = float(sampleCount - 1) * float(lambda - LAMBDA_MIN) / float(LAMBDA_MAX - LAMBDA_MIN);
 		uint8_t lowerSample = uint8_t(sample);
 		uint8_t higherSample = lowerSample + 1;
+
+		//return getSample(lowerSample);
 
 		float a = getSample(lowerSample),
 			  b = getSample(higherSample);
@@ -123,3 +140,64 @@ private:
 	uint8_t sampleCount;
 	float* samples;
 };
+
+namespace
+{
+	Spectrum operator*(Spectrum s, float k)
+	{
+		for (uint8_t i = 0; i < s.getSampleCount(); i++)
+			s.setSample(i, k * s.getSample(i));
+		return s;
+	}
+
+	Spectrum operator*(float k, Spectrum s)
+	{
+		for (uint8_t i = 0; i < s.getSampleCount(); i++)
+			s.setSample(i, k * s.getSample(i));
+		return s;
+	}
+
+	Spectrum operator*(Spectrum s0, Spectrum s1)
+	{
+		if (s0.getSampleCount() == s1.getSampleCount())
+		{
+			for (uint8_t i = 0; i < s0.getSampleCount(); i++)
+				s0.setSample(i, s0.getSample(i) * s1.getSample(i));
+			return s0;
+		}
+		else if (s0.getSampleCount() > s1.getSampleCount())
+		{
+			for (uint8_t i = 0; i < s0.getSampleCount(); i++)
+				s0.setSample(i, s0.getSample(i) * s1.getPower(i * (LAMBDA_MAX - LAMBDA_MIN) / float(s0.getSampleCount()) + LAMBDA_MIN));
+			return s0;
+		}
+		else
+		{
+			for (uint8_t i = 0; i < s1.getSampleCount(); i++)
+				s1.setSample(i, s1.getSample(i) * s0.getPower(i * (LAMBDA_MAX - LAMBDA_MIN) / float(s1.getSampleCount()) + LAMBDA_MIN));
+			return s1;
+		}
+	}
+
+	Spectrum operator+(Spectrum s0, Spectrum s1)
+	{
+		if (s0.getSampleCount() == s1.getSampleCount())
+		{
+			for (uint8_t i = 0; i < s0.getSampleCount(); i++)
+				s0.setSample(i, s0.getSample(i) + s1.getSample(i));
+			return s0;
+		}
+		else if (s0.getSampleCount() > s1.getSampleCount())
+		{
+			for (uint8_t i = 0; i < s0.getSampleCount(); i++)
+				s0.setSample(i, s0.getSample(i) + s1.getPower(i * (LAMBDA_MAX - LAMBDA_MIN) / float(s0.getSampleCount()) + LAMBDA_MIN));
+			return s0;
+		}
+		else
+		{
+			for (uint8_t i = 0; i < s1.getSampleCount(); i++)
+				s1.setSample(i, s1.getSample(i) + s0.getPower(i * (LAMBDA_MAX - LAMBDA_MIN) / float(s1.getSampleCount()) + LAMBDA_MIN));
+			return s1;
+		}
+	}
+}

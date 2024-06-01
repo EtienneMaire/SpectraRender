@@ -3,7 +3,8 @@
 #include "Image.hpp"
 #include <string>
 #include "Spectrum.hpp"
-#include "SpectrumDefs.hpp"
+
+#include <iostream>
 
 class Renderer
 {
@@ -24,12 +25,12 @@ public:
 		{
 			for (uint16_t j = 0; j < render.width; j++)
 			{
-				/*glm::vec3 rgb(j / (float)render.width, 
-					i / (float)render.height, 0);
+				glm::vec3 rgb(j / (float)render.width, 
+							i / (float)render.height, 0);
+				//glm::vec3 rgb(0, 0, 1);
+				//Spectrum color(rgb, 32);
+				//render.setPixel(j, i, color.toRGB(Eye));
 				render.setPixel(j, i, rgb);
-				Spectrum color(rgb);
-				render.setPixel(j, i, color.toRGB(Eye));*/
-				render.setPixel(j, i, cyanSpectrum.toRGB(Eye));
 			}
 		}
 	}
