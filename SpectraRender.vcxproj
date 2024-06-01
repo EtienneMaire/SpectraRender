@@ -135,15 +135,18 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Spectrum.cpp" />
+    <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CIE.hpp" />
     <ClInclude Include="ColorSpaces.hpp" />
     <ClInclude Include="Image.hpp" />
+    <ClInclude Include="OBJ_Loader.h" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="CameraDefs.hpp" />
     <ClInclude Include="Spectrum.hpp" />
     <ClInclude Include="SpectrumDefs.hpp" />
+    <ClInclude Include="Triangle.hpp" />
     <ClInclude Include="util.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

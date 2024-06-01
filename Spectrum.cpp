@@ -53,6 +53,8 @@ void Spectrum::fromRGB(glm::vec3 rgb)
 			}
 		}
 
+		val = std::max(std::min(val, 1.f), 0.f);
+
 		setSample(i, val);
 	}
 }
