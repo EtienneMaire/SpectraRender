@@ -3,6 +3,7 @@
 #include "Image.hpp"
 #include "Spectrum.hpp"
 #include "Triangle.hpp"
+#include "Scene.hpp"
 
 #include <glm/vec3.hpp>
 #include <glm/gtx/intersect.hpp>
@@ -23,7 +24,7 @@ public:
 
 	}
 
-	void Render()
+	void Render(Scene scene)
 	{
 		float AR = render.width / float(render.height);
 		float focal = 60 * mm;
@@ -35,20 +36,16 @@ public:
 			{
 				float u = j / float(render.width);
 				float v = i / float(render.height);
-				glm::vec3 rayDir((u - 0.5f) * AR, (v - 0.5f), focal);
+				glm::vec3 rayDir((u - 0.5f) * AR, (v - 0.5f), -focal);
 				rayDir = normalize(rayDir);
-
-				Triangle T(
-					glm::vec3(-1, -1, 1),
-					glm::vec3(1, 1, 1),
-					glm::vec3(1, -1, 1));
 
 				glm::vec3 rgb(0);
 				float t;
-				glm::vec3 X;
-				if (T.intersection(camPos, rayDir,
-					t, X))
-					rgb = glm::vec3(1);
+				glm::vec3 X, N;
+				Material* mat;
+				if (scene.intersect(camPos, rayDir,
+					t, X, N, mat))
+					rgb = mat->albedo;
 
 				Spectrum color(rgb, 32);
 				render.setPixel(j, i, color.toRGB(Eye));

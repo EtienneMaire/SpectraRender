@@ -60,38 +60,38 @@ namespace
 		return rgb * RGB_To_XYZ_matrix;
 	}
 
-	glm::vec3 convertColorSpace(
-	glm::vec3 color, ColorSpace colorSpaceIn, ColorSpace colorSpaceOut)
-	{
-		if (colorSpaceIn == colorSpaceOut) return color;
+	//glm::vec3 convertColorSpace(
+	//glm::vec3 color, ColorSpace colorSpaceIn, ColorSpace colorSpaceOut)
+	//{
+	//	if (colorSpaceIn == colorSpaceOut) return color;
 
-		glm::vec3 rgb(0);
-		switch (colorSpaceIn)
-		{
-		case XYZ:
-			rgb = XYZ_To_RGB(color);
-			break;
-		case xyY:
-			rgb = XYZ_To_RGB(xyY_To_XYZ(color));// xyY_To_RGB(color);
-			break;
-		case RGB:
-			rgb = color;
-			break;
-		case sRGB:
-			rgb = sRGB_To_RGB(color);
-			break;
-		}
+	//	glm::vec3 rgb(0);
+	//	switch (colorSpaceIn)
+	//	{
+	//	case XYZ:
+	//		rgb = XYZ_To_RGB(color);
+	//		break;
+	//	case xyY:
+	//		rgb = XYZ_To_RGB(xyY_To_XYZ(color));// xyY_To_RGB(color);
+	//		break;
+	//	case RGB:
+	//		rgb = color;
+	//		break;
+	//	case sRGB:
+	//		rgb = sRGB_To_RGB(color);
+	//		break;
+	//	}
 
-		switch (colorSpaceOut)
-		{
-		case XYZ:
-			return RGB_To_XYZ(rgb);
-		case xyY:
-			return XYZ_To_xyY(RGB_To_XYZ(rgb));
-		case RGB:
-			return rgb;
-		case sRGB:
-			return RGB_To_sRGB(rgb);
-		}
-	}
+	//	switch (colorSpaceOut)
+	//	{
+	//	case XYZ:
+	//		return RGB_To_XYZ(rgb);
+	//	case xyY:
+	//		return XYZ_To_xyY(RGB_To_XYZ(rgb));
+	//	case RGB:
+	//		return rgb;
+	//	case sRGB:
+	//		return RGB_To_sRGB(rgb);
+	//	}
+	//}
 }

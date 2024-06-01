@@ -133,7 +133,10 @@
   <ItemGroup>
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Spectrum.cpp" />
     <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
@@ -141,9 +144,12 @@
     <ClInclude Include="CIE.hpp" />
     <ClInclude Include="ColorSpaces.hpp" />
     <ClInclude Include="Image.hpp" />
-    <ClInclude Include="OBJ_Loader.h" />
+    <ClInclude Include="Material.hpp" />
+    <ClInclude Include="Mesh.hpp" />
+    <ClInclude Include="OBJ_loader\tiny_obj_loader.h" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="CameraDefs.hpp" />
+    <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Spectrum.hpp" />
     <ClInclude Include="SpectrumDefs.hpp" />
     <ClInclude Include="Triangle.hpp" />
