@@ -6,7 +6,7 @@ bool Triangle::intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection,
 {
     glm::vec3 ab = b - a;
     glm::vec3 ac = c - a;
-    glm::vec3 n = cross(ab, ac);
+    glm::vec3 n = normal;
 
     float N_rayDir = dot(n, rayDirection);
 

@@ -37,6 +37,9 @@ void Scene::loadFromOBJ(std::string path)
         mat.albedo.z = _materials[i].diffuse[2];
         mat.metallic = _materials[i].metallic;
         mat.roughness = _materials[i].roughness;
+        mat.emissionColor.x = _materials[i].emission[0];
+        mat.emissionColor.y = _materials[i].emission[1];
+        mat.emissionColor.z = _materials[i].emission[2];
         materials.push_back(mat);
     }
 
@@ -79,6 +82,9 @@ void Scene::loadFromOBJ(std::string path)
                         tinyobj::real_t ty = attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
                     }*/
                 }
+
+                tri.computeNormal();
+                tri.computeArea();
 
                 tri.mat = &materials[shapes[s].mesh.material_ids[f]];
                 mesh.addTriangle(tri);

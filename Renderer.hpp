@@ -4,6 +4,7 @@
 #include "Spectrum.hpp"
 #include "Triangle.hpp"
 #include "Scene.hpp"
+#include "Path.hpp"
 
 #include <glm/vec3.hpp>
 #include <glm/gtx/intersect.hpp>
@@ -24,13 +25,14 @@ public:
 
 	}
 
-	void Render(Scene scene)
+	void Render(Scene scene, uint8_t maxBounces, uint16_t samples)
 	{
 		float AR = render.width / float(render.height);
 		float focal = 60 * mm;
 		glm::vec3 camPos(0);
 
-		for (uint16_t i = 0; i < render.height; i++)
+#pragma omp parallel for
+		for (int16_t i = 0; i < render.height; i++)
 		{
 			for (uint16_t j = 0; j < render.width; j++)
 			{
@@ -39,15 +41,17 @@ public:
 				glm::vec3 rayDir((u - 0.5f) * AR, (v - 0.5f), -focal);
 				rayDir = normalize(rayDir);
 
-				glm::vec3 rgb(0);
-				float t;
-				glm::vec3 X, N;
-				Material* mat;
-				if (scene.intersect(camPos, rayDir,
-					t, X, N, mat))
-					rgb = mat->albedo;
-
-				Spectrum color(rgb, 32);
+				Spectrum color(0.f, 32);
+				Path path;
+				for (uint16_t k = 0; k < samples; k++)
+				{
+					path.create(scene, maxBounces, camPos, rayDir);
+					Spectrum s = path.evaluate();
+					for (uint8_t l = 0; l < 32; l++)
+						color.setSample(l, color.getSample(l) + s.getSample(l));
+				}
+				/*for (uint8_t l = 0; l < 32; l++)
+					color.setSample(l, color.getSample(l) / samples);*/
 				render.setPixel(j, i, color.toRGB(Eye));
 			}
 		}

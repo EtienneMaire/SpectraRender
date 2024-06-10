@@ -6,6 +6,15 @@
 
 #include "Mesh.hpp"
 
+namespace
+{
+	struct PathNode
+	{
+		glm::vec3 X, N;
+		Material* mat;
+	};
+}
+
 class Scene
 {
 public:
@@ -13,7 +22,7 @@ public:
 
     void loadFromOBJ(std::string path);
 	bool intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection,
-		float& t, glm::vec3& X, glm::vec3& N, Material*& mat)
+		float& t, PathNode& node)
 	{
 		bool intersection = false;
 		t = 0;
@@ -28,9 +37,9 @@ public:
 				{
 					intersection = true;
 					t = _t;
-					X = _X;
-					N = _N;
-					mat = _mat;
+					node.X = _X;
+					node.N = _N;
+					node.mat = _mat;
 				}
 			}
 		}
