@@ -30,6 +30,10 @@ vec3 RGB_To_XYZ(vec3 rgb)
 
 vec3 sRGB_To_RGB(vec3 srgb)
 {
+    srgb.x = max(0, srgb.x);
+    srgb.y = max(0, srgb.y);
+    srgb.z = max(0, srgb.z);
+
     vec3 out = {pow(srgb.x, 1 / 2.2f),
         pow(srgb.y, 1 / 2.2f),
         pow(srgb.z, 1 / 2.2f)};
@@ -38,6 +42,10 @@ vec3 sRGB_To_RGB(vec3 srgb)
 
 vec3 RGB_To_sRGB(vec3 rgb)
 {
+    rgb.x = max(0, rgb.x);
+    rgb.y = max(0, rgb.y);
+    rgb.z = max(0, rgb.z);
+
     vec3 out = {pow(rgb.x, 2.2f),
         pow(rgb.y, 2.2f),
         pow(rgb.z, 2.2f)};

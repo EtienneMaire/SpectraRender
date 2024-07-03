@@ -19,11 +19,7 @@ int main()
     initSPDs();
     vec3 rgb = {1, 0, 0};
     SPD color = SPD_FromRGB(rgb);
-    rgb = RGB_FromSPD(color, Human_Eye);
-    rgb.x = max(0, rgb.x);
-    rgb.y = max(0, rgb.y);
-    rgb.z = max(0, rgb.z);
-    rgb = sRGB_To_RGB(rgb);
+    rgb = sRGB_To_RGB(RGB_FromSPD(color, Human_Eye));
     Image img = Image_Create(256, 256);
     for(uint32_t i = 0; i < img.width * img.height; i++)
         img.data[i] = rgb;
