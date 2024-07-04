@@ -12,7 +12,6 @@ typedef struct Mesh
     uint64_t triangleCount;
 } Mesh;
 
-
 Mesh Mesh_CreateEmpty()
 {
     Mesh mesh;

@@ -24,6 +24,9 @@ int main()
 
     MaterialLibrary mtllib = MaterialLibrary_LoadFromMTL("../scenes/cornellbox.mtl");
 
+    for(uint8_t i = 0; i < mtllib.matCount; i++)
+        printf("%s\n", mtllib.mat[i].name);
+
     MaterialLibrary_free(&mtllib);
 
     vec3 rgb = {1, 0, 0};

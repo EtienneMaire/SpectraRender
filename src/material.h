@@ -46,7 +46,7 @@ MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
         {
             if(matCount != 0xff)
                 mats[matCount] = currentMat;
-            sscanf(line, "%64s", currentMat.name);
+            sscanf(line, "%*s %64s", currentMat.name);
             matCount++;
         }
         else
@@ -54,9 +54,7 @@ MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
             if(strcmp(keyword, "Kd") == 0)
             {
                 real X, Y, Z;
-                sscanf(line, "%f", &X);
-                sscanf(line, "%f", &Y);
-                sscanf(line, "%f", &Z);
+                sscanf(line, "%*s %f %f %f", &X, &Y, &Z);
                 currentMat.albedo.x = X;
                 currentMat.albedo.y = Y;
                 currentMat.albedo.z = Z;
@@ -64,9 +62,7 @@ MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
             else if(strcmp(keyword, "Ke") == 0)
             {
                 real X, Y, Z;
-                sscanf(line, "%f", &X);
-                sscanf(line, "%f", &Y);
-                sscanf(line, "%f", &Z);
+                sscanf(line, "%*s %f %f %f", &X, &Y, &Z);
                 currentMat.emission.x = X;
                 currentMat.emission.y = Y;
                 currentMat.emission.z = Z;
@@ -74,31 +70,36 @@ MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
             else if(strcmp(keyword, "Ni") == 0)
             {
                 real η;
-                sscanf(line, "%f", &η);
+                sscanf(line, "%*s %f", &η);
                 currentMat.η = η;
                 currentMat.k = 0;   // Sadly not supported by most 3D softwares
             }
             else if(strcmp(keyword, "Pr") == 0)
             {
                 real α;
-                sscanf(line, "%f", &α);
+                sscanf(line, "%*s %f", &α);
                 currentMat.roughness = α;
             }
             else if(strcmp(keyword, "Pm") == 0)
             {
                 real metallic;
-                sscanf(line, "%f", &metallic);
-                currentMat.metallic = metallic;
+                sscanf(line, "%*s %f", &metallic);
+                currentMat.metallic = metallic == 1;
             }
             else if(strcmp(keyword, "Tf") == 0)
             {
                 real transmission;
-                sscanf(line, "%f", &transmission);
+                sscanf(line, "%*s %f", &transmission);
                 currentMat.transmission = transmission;
             }
         }
     }
 
+    if(matCount != 0xff)
+        mats[matCount] = currentMat;
+    sscanf(line, "%*s %64s", currentMat.name);
+    matCount++;
+    
     mtllib.matCount = matCount;
     mtllib.mat = (Material*)malloc(matCount * sizeof(Material));
     memcpy(mtllib.mat, mats, matCount * sizeof(Material));
