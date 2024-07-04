@@ -22,7 +22,9 @@ int main()
 {
     initSPDs();
 
-    // MaterialLibrary mtllib = MaterialLibrary_LoadFromMTL("../scenes/cornellbox.mtl");
+    MaterialLibrary mtllib = MaterialLibrary_LoadFromMTL("../scenes/cornellbox.mtl");
+
+    MaterialLibrary_free(&mtllib);
 
     vec3 rgb = {1, 0, 0};
     SPD color = SPD_FromRGB(rgb);
@@ -37,5 +39,6 @@ int main()
     printf("Saving to file \"%s\" ...", fileName);
     Image_SaveToBMP(img, fileName);
     printf(" | Done\n");
+
     while(true);
 }
