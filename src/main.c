@@ -22,21 +22,11 @@ int main()
 {
     initSPDs();
 
-    MaterialLibrary mtllib = MaterialLibrary_LoadFromMTL("../scenes/cornellbox.mtl");
-
-    for(uint8_t i = 0; i < mtllib.matCount; i++)
-        printf("%s\n", mtllib.mat[i].name);
-
-    MaterialLibrary_free(&mtllib);
-
-    vec3 rgb = {1, 0, 0};
-    SPD color = SPD_FromRGB(rgb);
-    rgb = sRGB_To_RGB(RGB_FromSPD(color, Human_Eye));
+    Scene scene = Scene_LoadFromOBJ("../scenes/cornellbox.obj");
 
     Image img = Image_Create(256, 256);
 
-    for(uint32_t i = 0; i < img.width * img.height; i++)
-        img.data[i] = rgb;
+    Scene_free(&scene);
 
     char* fileName = "../out/image.bmp";
     printf("Saving to file \"%s\" ...", fileName);

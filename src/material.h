@@ -21,11 +21,19 @@ typedef struct MaterialLibrary
     uint8_t matCount;
 } MaterialLibrary;
 
-MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
+MaterialLibrary MaterialLibrary_CreateEmpty()
 {
     MaterialLibrary mtllib;
+    
     mtllib.mat = NULL;
     mtllib.matCount = 0;
+
+    return mtllib;
+}
+
+MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
+{
+    MaterialLibrary mtllib = MaterialLibrary_CreateEmpty();
 
     FILE* f = fopen(path, "r");
 
