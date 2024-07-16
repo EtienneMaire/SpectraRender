@@ -2,7 +2,7 @@
 
 typedef struct mat3 
 {
-    real data[3][3];
+    real_t data[3][3];
 } mat3;
 
 vec3 mul_vec3_mat3(vec3 u, mat3 mat)

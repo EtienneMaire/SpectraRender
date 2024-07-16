@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "util.h"
+#include "vector.h"
 #include "cameradefs.h"
 #include "vec3.h"
 #include "image.h"

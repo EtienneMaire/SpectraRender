@@ -2,7 +2,7 @@
 
 typedef struct vec3
 {
-    real x, y, z;
+    real_t x, y, z;
 } vec3;
 
 vec3 mul_vec3(vec3 u, vec3 v)
@@ -17,29 +17,29 @@ vec3 add_vec3(vec3 u, vec3 v)
     return out;
 }
 
-vec3 mul_vec3_k(vec3 u, real k)
+vec3 mul_vec3_k(vec3 u, real_t k)
 {
     vec3 out = {u.x * k, u.y * k, u.z * k};
     return out;
 }
 
-vec3 div_vec3_k(vec3 u, real k)
+vec3 div_vec3_k(vec3 u, real_t k)
 {
     vec3 out = {u.x / k, u.y / k, u.z / k};
     return out;
 }
 
-real dot(vec3 u, vec3 v)
+real_t dot(vec3 u, vec3 v)
 {
     return u.x * v.x + u.y * v.y + u.z * v.z;
 }
 
-real norm2(vec3 u)
+real_t norm2(vec3 u)
 {
     return dot(u, u);
 }
 
-real norm(vec3 u)
+real_t norm(vec3 u)
 {
     return sqrt(norm2(u));
 }

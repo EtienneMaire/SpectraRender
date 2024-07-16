@@ -42,6 +42,8 @@ Scene Scene_CreateEmpty()
 Scene Scene_LoadFromOBJ(const char* path)
 {
     Scene scene = Scene_CreateEmpty();
+    vec3_vector vertices = vec3_vector_CreateEmpty();
+    vec3_vector_Free(&vertices); 
     return scene;
 }
 

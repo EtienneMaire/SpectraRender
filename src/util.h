@@ -1,6 +1,6 @@
 #pragma once
 
-#define real            float
+#define real_t          float
 
 #define sqr(x)          ((x) * (x))
 #define ln(x)           log(x)
