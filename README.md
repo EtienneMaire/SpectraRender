@@ -1,2 +1,2 @@
 # SpectraRender
- A simple WIP pathtracer written in C
+ A simple WIP spectral pathtracer written in C
