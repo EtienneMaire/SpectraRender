@@ -1,5 +1,11 @@
 #pragma once
 
+typedef struct IOR
+{
+    real_t η;             // {
+    real_t k;             // } -> IOR = η - ki
+} IOR;
+
 typedef struct Material
 {
     vec3 albedo;        // {
@@ -9,8 +15,7 @@ typedef struct Material
     bool metallic;      // 0: dielectric -> 1: conductor
     bool transmission;  // 0: opaque -> 1: transparent
     
-    real_t η;             // {
-    real_t k;             // } -> IOR = η - ki
+    IOR ior;
 
     char name[64];
 } Material; 
@@ -61,43 +66,43 @@ MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
         {
             if(strcmp(keyword, "Kd") == 0)
             {
-                real_t X, Y, Z;
-                sscanf(line, "%*s %f %f %f", &X, &Y, &Z);
+                double X, Y, Z;
+                sscanf(line, "%*s %lf %lf %lf", &X, &Y, &Z);
                 currentMat.albedo.x = X;
                 currentMat.albedo.y = Y;
                 currentMat.albedo.z = Z;
             }
             else if(strcmp(keyword, "Ke") == 0)
             {
-                real_t X, Y, Z;
-                sscanf(line, "%*s %f %f %f", &X, &Y, &Z);
+                double X, Y, Z;
+                sscanf(line, "%*s %lf %lf %lf", &X, &Y, &Z);
                 currentMat.emission.x = X;
                 currentMat.emission.y = Y;
                 currentMat.emission.z = Z;
             }
             else if(strcmp(keyword, "Ni") == 0)
             {
-                real_t η;
-                sscanf(line, "%*s %f", &η);
-                currentMat.η = η;
-                currentMat.k = 0;   // Sadly not supported by most 3D softwares
+                double η;
+                sscanf(line, "%*s %lf", &η);
+                currentMat.ior.η = η;
+                currentMat.ior.k = 0;   // Sadly not supported by most 3D softwares
             }
             else if(strcmp(keyword, "Pr") == 0)
             {
-                real_t α;
-                sscanf(line, "%*s %f", &α);
+                double α;
+                sscanf(line, "%*s %lf", &α);
                 currentMat.roughness = α;
             }
             else if(strcmp(keyword, "Pm") == 0)
             {
-                real_t metallic;
-                sscanf(line, "%*s %f", &metallic);
+                double metallic;
+                sscanf(line, "%*s %lf", &metallic);
                 currentMat.metallic = metallic == 1;
             }
             else if(strcmp(keyword, "Tf") == 0)
             {
-                real_t transmission;
-                sscanf(line, "%*s %f", &transmission);
+                double transmission;
+                sscanf(line, "%*s %lf", &transmission);
                 currentMat.transmission = transmission;
             }
         }

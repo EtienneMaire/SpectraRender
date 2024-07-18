@@ -4,8 +4,6 @@
 #define LAMBDA_MIN          380
 #define LAMBDA_MAX          720
 
-const real_t CIE_Y_Integral = 106.856895;
-
 real_t CIE_1931_X(real_t λ)
 {
 	return  1.065 * exp(-0.5 * sqr((λ - 595.8) / 33.33)) +

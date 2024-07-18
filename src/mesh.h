@@ -42,7 +42,30 @@ Scene Scene_CreateEmpty()
 Scene Scene_LoadFromOBJ(const char* path)
 {
     Scene scene = Scene_CreateEmpty();
+
+    FILE* f = fopen(path, "r");     
+
+    if(!f)
+        return scene;
+
+    char line[64];
+    while(fgets(line, 64, f))
+    {
+        char keyword[8];
+        sscanf(line, "%8s", keyword);           
+
+        if(strcmp(keyword, "mtllib") == 0)
+        {
+            char fileName[64 - 7];
+            sscanf(line, "%*s %64s", fileName);
+            scene.mtllib = MaterialLibrary_LoadFromMTL((char*)&fileName);
+        }
+    }
+
+    fclose(f);
+
     vec3_vector vertices = vec3_vector_CreateEmpty();
+
     vec3_vector_Free(&vertices); 
     return scene;
 }

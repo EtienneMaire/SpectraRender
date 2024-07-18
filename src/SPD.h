@@ -11,7 +11,7 @@ typedef struct SPD_Mask
     uint8_t sampleCount;
 } SPD_Mask;
 
-SPD_Mask SPD_Mask_Init()
+SPD_Mask SPD_Mask_Create()
 {
     SPD_Mask mask;
     for(uint8_t i = 0; i < SPD_SAMPLE_COUNT; i++)
@@ -31,14 +31,25 @@ SPD SPD_FromSamples(real_t* data, uint8_t nbSamples)
         for(uint8_t i = 0; i < SPD_SAMPLE_COUNT; i++)
             spd.samples[i] = data[i];
     }
-    else
+    else if(nbSamples > SPD_SAMPLE_COUNT)
     {
         uint8_t lastSample = 0xff;
         for(uint8_t i = 0; i < nbSamples; i++)
         {
-            uint8_t sample = i * SPD_SAMPLE_COUNT / nbSamples;
+            uint8_t sample = (uint16_t)i * SPD_SAMPLE_COUNT / nbSamples;
             if(sample != lastSample)
+            {
                 spd.samples[sample] = data[i];
+                lastSample = sample;
+            }
+        }
+    }
+    else // if(nbSamples < SPD_SAMPLE_COUNT)
+    {
+        for(uint8_t i = 0; i < SPD_SAMPLE_COUNT; i++)
+        {
+            uint8_t sample = (uint16_t)i * nbSamples / SPD_SAMPLE_COUNT;
+                spd.samples[i] = data[sample];
         }
     }
     return spd;
@@ -52,8 +63,8 @@ real_t SPD_GetPower(SPD spd, real_t λ)
         return 0;
 
     real_t sample = ((real_t)SPD_SAMPLE_COUNT - 1) * (real_t)(λ - LAMBDA_MIN) / (real_t)(LAMBDA_MAX - LAMBDA_MIN);
-    uint8_t lowerSample = (uint8_t)sample;
-    uint8_t higherSample = lowerSample + 1;
+    uint8_t lowerSample = (uint8_t)sample;  // floor sample
+    uint8_t higherSample = ceil(sample);
 
     real_t a = spd.samples[lowerSample],
          b = spd.samples[higherSample];
@@ -137,12 +148,15 @@ vec3 XYZ_FromSPD(SPD spd, CameraType cam)
     vec3 xyz = {0, 0, 0};
     if (cam == Human_Eye)
     {
-        //for (uint16_t i = LAMBDA_MIN; i < LAMBDA_MAX; i++)
-        for (uint16_t i = LAMBDA_MIN; i < LAMBDA_MAX; i += (LAMBDA_MAX - LAMBDA_MIN) / SPD_SAMPLE_COUNT)
+        real_t CIE_Y_Integral = 0;
+        // for (uint16_t i = LAMBDA_MIN; i < LAMBDA_MAX; i++)
+        for (uint16_t i = LAMBDA_MIN; i < LAMBDA_MAX; i += (LAMBDA_MAX - LAMBDA_MIN) / (real_t)SPD_SAMPLE_COUNT)
         {
-            real_t dx = (LAMBDA_MAX - LAMBDA_MIN) / (real_t)SPD_SAMPLE_COUNT;   // 1
+            // real_t dx = 1;
+            real_t dx = (LAMBDA_MAX - LAMBDA_MIN) / (real_t)SPD_SAMPLE_COUNT; 
             real_t power = SPD_GetPower(spd, i);
             vec3 CIE = {CIE_1931_X(i), CIE_1931_Y(i), CIE_1931_Z(i)};
+            CIE_Y_Integral += dx * CIE_1931_Y(i);
             xyz = add_vec3(xyz, mul_vec3_k(CIE, power * dx));
         }
         return div_vec3_k(xyz, CIE_Y_Integral);
