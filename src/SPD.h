@@ -156,7 +156,7 @@ vec3 XYZ_FromSPD(SPD spd, CameraType cam)
             real_t dx = (LAMBDA_MAX - LAMBDA_MIN) / (real_t)SPD_SAMPLE_COUNT; 
             real_t power = SPD_GetPower(spd, i);
             vec3 CIE = {CIE_1931_X(i), CIE_1931_Y(i), CIE_1931_Z(i)};
-            CIE_Y_Integral += dx * CIE_1931_Y(i);
+            CIE_Y_Integral += dx * CIE.y;
             xyz = add_vec3(xyz, mul_vec3_k(CIE, power * dx));
         }
         return div_vec3_k(xyz, CIE_Y_Integral);
@@ -167,5 +167,5 @@ vec3 XYZ_FromSPD(SPD spd, CameraType cam)
 
 vec3 RGB_FromSPD(SPD spd, CameraType cam)
 {
-    return XYZ_To_RGB(XYZ_FromSPD(spd, cam));
+    return sRGB_To_RGB(XYZ_To_RGB(XYZ_FromSPD(spd, cam)));
 }

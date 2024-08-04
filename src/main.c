@@ -33,14 +33,14 @@ int main()
 
     vec3 rgb = {1, 1, 1};
     SPD spd = SPD_FromRGB(rgb);
-    rgb = (RGB_FromSPD(spd, Human_Eye));
+    rgb = RGB_FromSPD(spd, Human_Eye);
 
     for(uint32_t i = 0; i < img.width * img.height; i++)
         img.data[i] = rgb;
 
     Scene_free(&scene);
 
-    char* fileName = "../out/image3.bmp";
+    char* fileName = "../out/image.bmp";
     printf("Saving to file \"%s\" ...", fileName);
     Image_SaveToBMP(img, fileName);
     printf(" | Done\n");

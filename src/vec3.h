@@ -23,9 +23,21 @@ vec3 mul_vec3_k(vec3 u, real_t k)
     return out;
 }
 
+vec3 mul_vec3_vec3(vec3 u, vec3 v)
+{
+    vec3 out = {u.x * v.x, u.y * v.y, u.z * v.z};
+    return out;
+}
+
 vec3 div_vec3_k(vec3 u, real_t k)
 {
     vec3 out = {u.x / k, u.y / k, u.z / k};
+    return out;
+}
+
+vec3 div_vec3_vec3(vec3 u, vec3 v)
+{
+    vec3 out = {u.x / v.x, u.y / v.y, u.z / v.z};
     return out;
 }
 

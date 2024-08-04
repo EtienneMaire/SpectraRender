@@ -12,3 +12,5 @@
 
 #define MAX_RAY_DEPTH   8
 #define MAX_MTLLIB_SIZE 64
+
+#define swap(a, b) { real_t tmp = a; a = b; b = tmp; }

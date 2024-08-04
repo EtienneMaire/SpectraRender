@@ -11,9 +11,9 @@ typedef struct Material
     vec3 albedo;        // {
     vec3 emission;      // } -> As an RGB color to save memory
 
-    real_t roughness;     // 0: perfectly smooth -> +∞ infinitely rough
+    real_t roughness;   // 0: perfectly smooth -> +∞ infinitely rough
     bool metallic;      // 0: dielectric -> 1: conductor
-    bool transmission;  // 0: opaque -> 1: transparent
+    bool opaque;        
     
     IOR ior;
 
@@ -103,7 +103,7 @@ MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
             {
                 double transmission;
                 sscanf(line, "%*s %lf", &transmission);
-                currentMat.transmission = transmission;
+                currentMat.opaque = transmission < 0.5f;
             }
         }
     }
