@@ -38,12 +38,17 @@ MaterialLibrary MaterialLibrary_CreateEmpty()
 
 MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
 {
+    printf("Loading material library \"%s\" ...", path);
+
     MaterialLibrary mtllib = MaterialLibrary_CreateEmpty();
 
     FILE* f = fopen(path, "r");
 
     if(!f)
+    {
+        printf(" | Error: No such path or directory\n");
         return mtllib;
+    }
     
     Material mats[MAX_MTLLIB_SIZE];
     uint8_t matCount = 0xff;
@@ -119,6 +124,7 @@ MaterialLibrary MaterialLibrary_LoadFromMTL(const char* path)
 
     fclose(f);
 
+    printf(" | Done\n");
     return mtllib;
 }
 

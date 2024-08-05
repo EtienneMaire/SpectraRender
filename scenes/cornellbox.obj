@@ -1,6 +1,6 @@
 # Blender 4.0.1
 # www.blender.org
-mtllib cornelbox.mtl
+mtllib cornellbox.mtl
 g Box_Mesh
 v -1.000000 -1.000000 -3.242972
 v -1.000000 1.000000 -3.242972
